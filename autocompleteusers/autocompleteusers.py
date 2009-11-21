@@ -82,7 +82,11 @@ class AutocompleteUsers(Component):
                                  user[NAME])
                   for value, user in sorted(users) ] # value unused (placeholder need for sorting)
 
-        req.write('\n'.join(users))
+        content = '\n'.join(users)
+        if isinstance(content, unicode): 
+            content = content.encode('utf-8') 
+        req.send_header('Content-Length', len(content))
+        req.write(content)
 
 
     ### methods for ITemplateProvider
